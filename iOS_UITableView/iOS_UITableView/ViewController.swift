@@ -35,7 +35,33 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Dispose of any resources that can be recreated.
     }
     
+    //懒加载
+    lazy var datas: [Int] = {
+        //创建一个存放int的数组
+        var nums = [Int]()
+        //添加数据
+        for i in 0...50{
+            nums.append(i)
+        }
+        return nums
+    }()
     
+
+    //实现协议方法
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return datas.count
+    }
     
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
+        
+        //as 把xx作为xx，此处是将方法deqxxx的返回值AnyObject类型当做UITableViewCell
+        //！告诉编译器我确定这里的UITableViewCell一定是非nil的, 可以放心的执行后面的
+        let cell = tableView.dequeueReusableCellWithIdentifier(ID, forIndexPath: indexPath) as! UITableViewCell
+        
+        //配置cell Label要拆包
+        cell.textLabel!.text = "假数据 - \(datas[indexPath.row])"
+        
+        return cell
+    }
 }
 
